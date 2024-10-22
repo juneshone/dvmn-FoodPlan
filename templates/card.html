@@ -9,6 +9,11 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>План питания на неделю, меню, рецепты, список покупок. Классическое меню, безуглеводное меню</title>
+    <style>
+        .round {
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -17,46 +22,53 @@
                 <a class="navbar-brand" href="{% url 'start_page' %}">
                     <img src="{% static 'img/logo.8d8f24edbb5f.svg' %}" height="55" width="189" alt="">
                 </a>
-                <button class="btn btn-outline-success me-2 shadow-none foodplan_green foodplan__border_green">Назад</button>
+                <a href="{% url 'account' %}"><button class="btn btn-outline-success me-2 shadow-none foodplan_green foodplan__border_green">Назад</button></a>
             </div>
         </nav>
     </header>
     <main style="margin-top: calc(2rem + 75px);">
-        <section>
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 col-md-4 d-flex justify-content-center">
-                        <div class="card foodplan__card_borderless">
-                            <img src="{% static 'img/circle1.png' %}" alt="">
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-8 d-flex flex-column justify-content-between">
-                        <div class="row">
-                            <h2>Название рецепта</h2>
-                            <div class="col-12 col-sm-6 d-flex flex-column justify-content-between">
-                                <h6>Описание рецепта Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi eius nemo voluptatum minus
-                                    facilis blanditiis ut architecto rem maiores, aperiam aut debitis repellat quod voluptates natus, laboriosam hic
-                                    adipisci non.</h6>
-                                <h6>Рецепт рецепт Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi eius nemo voluptatum minus
-                                    facilis blanditiis ut architecto rem maiores, aperiam aut debitis repellat quod voluptates natus, laboriosam hic
-                                    adipisci non.</h6>
+        {% if recipe %}
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-4 d-flex justify-content-center">
+                            <div class="card foodplan__card_borderless">
+                                <img src="{{recipe.image.url}}" alt="" class="round">
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <small class="link-secondary">Ингредиенты:</small>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item disabled"><small>ингредиент (500г.)</small></li>
-                                    <li class="list-group-item disabled"><small>ингредиент (500г.)</small></li>
-                                    <li class="list-group-item disabled"><small>ингредиент (500г.)</small></li>
-                                    <li class="list-group-item disabled"><small>ингредиент (500г.)</small></li>
-                                    <li class="list-group-item disabled"><small>ингредиент (500г.)</small></li>
-                                </ul>
-                                <small class="link-secondary">Общая калорийность: 1000 ккал</small>
+                        </div>
+                        <div class="col-12 col-md-8 d-flex flex-column justify-content-between">
+                            <div class="row">
+                                <h2>{{ recipe.dish }}</h2>
+                                <div class="col-12 col-sm-6">
+                                    <h6>Инструкция приготовления:</h6>
+                                    <h8>{{ recipe.instruction }}</h8>
+                                    <h6>Стоимость ингредиентов блюда: {{ recipe.price }} р.</h6>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <small class="link-secondary">Ингредиенты:</small>
+                                    <ul class="list-group list-group-flush">
+                                        {% for ingredient in recipe.ingredients %}
+                                            <li class="list-group-item disabled"><small>{{ ingredient.ingredient.title}} ({{ ingredient.quantity}}г.)</small></li>
+                                        {% endfor %}
+                                    </ul>
+                                    <small class="link-secondary">Общая калорийность: {{ recipe.calories }} ккал</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        {% else %}
+            <section>
+                <div class="container">
+                    <div class="col-12 col-sm-6">
+                        <div class="row">
+                            <h2>{{ not_recipe }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
     </main>
     <footer>
         <nav class="navbar navbar-expand-md navbar-light mt-5">
