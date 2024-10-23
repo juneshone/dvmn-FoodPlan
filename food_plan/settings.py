@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "client",
     "recipe",
     "orders",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -78,6 +79,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "food_plan.wsgi.application"
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_RENDER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -92,6 +105,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'client.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
