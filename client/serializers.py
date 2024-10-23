@@ -45,3 +45,20 @@ class LoginSerializer(serializers.Serializer):
         return user_data.data
 
 
+class SignUpSerializer(serializers.Serializer):
+    """ Регистрация пользователя (возвращает информацию о пользователе) """
+
+    username = serializers.CharField(max_length=50, required=True)
+    password = serializers.CharField(max_length=128, write_only=True, required=True)
+    first_name = serializers.CharField(max_length=50, required=True)
+    last_name = serializers.CharField(max_length=50, required=True)
+
+    def validate(self, data):
+        user = User.objects.create_user(
+            username=data['username'],
+            password=data['password'],
+            last_name=data['last_name'],
+            first_name=data['first_name']
+        )
+        user_data = UserSerializer(user)
+        return user_data.data

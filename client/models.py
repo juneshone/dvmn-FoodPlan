@@ -61,7 +61,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField('Имя', max_length=25)
     password = models.CharField('Пароль', max_length=100)
 
-    object = UserManager()
+    objects = UserManager()
 
     REQUIRED_FIELDS = ['last_name', 'first_name', 'password']
     USERNAME_FIELD = 'username'
