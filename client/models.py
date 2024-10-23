@@ -98,7 +98,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         dt = datetime.now() + timedelta(days=30) # время жизни токена
         token = jwt.encode({
             'user_id': self.id,
-            'exp': int(dt.strftime('%s'))
+            'exp': int(dt.strftime('%S'))
         }, settings.DJANGO_SECRET_KEY, algorithm='HS256')
         return token.decode('utf-8')
 
