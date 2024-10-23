@@ -50,10 +50,23 @@ class SignUpSerializer(serializers.Serializer):
 
     username = serializers.CharField(max_length=50, required=True)
     password = serializers.CharField(max_length=128, write_only=True, required=True)
+    password_confirmation = serializers.CharField(max_length=128, write_only=True, required=True)
     first_name = serializers.CharField(max_length=50, required=True)
     last_name = serializers.CharField(max_length=50, required=True)
 
     def validate(self, data):
+        users_count = User.objects.filter(username=data['username']).count()
+        errors = []
+        if users_count > 0:
+            errors.append(
+                {'username': 'Пользователь уже существует'}
+            )
+        if data['password'] != data['password_confirmation']:
+            errors.append(
+                {'password_confirmation': 'Подтверждение пароля не совпадает с самим паролем'}
+            )
+        if len(errors) > 0:
+            raise serializers.ValidationError({'errors': errors})
         user = User.objects.create_user(
             username=data['username'],
             password=data['password'],

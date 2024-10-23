@@ -24,8 +24,13 @@ class SighUpAPIView(APIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(data=serializer.validated_data, status=status.HTTP_200_OK)
+        if serializer.is_valid():
+            return Response(status=status.HTTP_200_OK, data=serializer.validated_data)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={
+                'status': False,
+                'detail': serializer.errors
+            })
 
 
 def account(request):
