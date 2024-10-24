@@ -15,13 +15,6 @@ class Menu(models.Model):
     )
 
 
-class Allergy(models.Model):
-    title = models.CharField(
-        verbose_name='аллергия',
-        max_length=50,
-        null=True,
-        blank=True
-    )
 
 
 class Order(models.Model):
@@ -40,8 +33,7 @@ class Order(models.Model):
         on_delete=models.CASCADE
     )
     datestart = models.DateTimeField(
-        verbose_name='дата начала',
-        auto_now_add=True
+        verbose_name='дата начала'
     )
     dateend = models.DateTimeField(
         verbose_name='дата конца'
@@ -57,11 +49,31 @@ class Order(models.Model):
         default='UNPROCESSED',
         db_index=True
     )
-    allergy = models.ForeignKey(
-        Allergy,
-        verbose_name='аллергия',
-        related_name='users',
-        on_delete=models.CASCADE
+    breakfast = models.BooleanField(
+        verbose_name='завтрак',
+        null=False,
+        blank=True
+    )
+    lunch = models.BooleanField(
+        verbose_name='обед',
+        null=False,
+        blank=True
+    )
+    dinner = models.BooleanField(
+        verbose_name='ужин',
+        null=False,
+        blank=True
+    )
+    dessert = models.BooleanField(
+        verbose_name='десерт',
+        null=False,
+        blank=True
+    )
+    promocode = models.CharField(
+        verbose_name='промокод',
+        max_length=50,
+        null=False,
+        blank=True
     )
     price = models.DecimalField(
         verbose_name='цена',
@@ -71,20 +83,29 @@ class Order(models.Model):
         null=False,
         blank=True
     )
-    breakfast = models.BooleanField(
-        verbose_name='завтрак',
+    active = models.BooleanField(
+        verbose_name='статус подписки',
+        default=False
     )
-    lunch = models.BooleanField(
-        verbose_name='обед',
-    )
-    dinner = models.BooleanField(
-        verbose_name='ужин',
-    )
-    dessert = models.BooleanField(
-        verbose_name='десерт'
-    )
-    promocode = models.CharField(
-        verbose_name='промокод',
-        null=False,
+
+    class Meta():
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
+
+    def __str__(self):
+        return f'{self.id} {self.user.name}'
+
+
+class Allergy(models.Model):
+    title = models.CharField(
+        verbose_name='аллергия',
+        max_length=50,
+        null=True,
         blank=True
+    )
+    order = models.ForeignKey(
+        Order,
+        verbose_name='аллергии',
+        related_name='allergies',
+        on_delete=models.CASCADE
     )
