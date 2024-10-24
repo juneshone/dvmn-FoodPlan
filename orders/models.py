@@ -85,6 +85,7 @@ class Order(models.Model):
     )
     promocode = models.CharField(
         verbose_name='промокод',
+        max_length=50,
         null=False,
         blank=True
     )
