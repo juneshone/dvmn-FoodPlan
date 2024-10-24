@@ -5,11 +5,14 @@ from django.views.generic import TemplateView
 from .forms import *
 
 
-def signup(request):
+class SignUp(TemplateView):
     """ Регистрация пользователя """
 
-    print(request.POST)
-    if request.method == 'POST':
+    def get(self, request):
+        return render(request, 'registration.html', {})
+
+    def post(self, request):
+        # TODO: обработать ошибку уникального пользователя и символы /&?
         form = SignUpForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data.get('first_name')
@@ -25,28 +28,37 @@ def signup(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('/client/account/')
-    else:
-        form = SignUpForm()
-    return render(request, 'registration.html', {'form': form})
+        else:
+            print(form.errors)
+        content = {'form': form}
+        return render(request, 'registration.html', content)
 
 
-def user_login(request):
+class UserLogin(TemplateView):
     """ Аутентификация пользователя по существующему паролю """
 
-    print(request.POST)
-    if request.method == 'POST':
+    def get(self, request):
+        return render(request, 'auth.html', {})
+
+    def post(self, request):
         form = LoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            username = form.cleaned_data.get('username', None)
+            password = form.cleaned_data.get('password', None)
             user = authenticate(username=username, password=password)
-            login(request, user)
+            # TODO: написать условие для подтверждения пароля
             if user is None:
-                raise 'Аутентификация пользователя не удалась'
+                # TODO: вывести пользователю информацию об ошибке ввода идентификационных данных
+                # 'Аутентификация пользователя не удалась'
+                # 'Пожалуйста, введите корректные логин и пароля. Оба поля могут быть чувствительны к регистру.'
+                # 'Если у вас еще нет акккаунта, то зарегистрируйтесь'
+                return redirect('/client/auth/')
+            login(request, user)
             return redirect('/client/account/')
-    else:
-        form = LoginForm()
-    return render(request, 'auth.html', {'form': form})
+        else:
+            print(form.errors)
+        content = {'form': form}
+        return render(request, 'auth.html', content)
 
 
 class AccountView(LoginRequiredMixin, TemplateView):

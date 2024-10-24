@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order
+from .models import Order, Menu
 
 
 
@@ -17,3 +17,8 @@ class OrderAdmin(admin.ModelAdmin):
         'dateend'
     ]
 
+
+@admin.register(Menu)
+class MenuAdmin(admin.ModelAdmin):
+    search_fields = ('title',)
+    list_display = ('title',)

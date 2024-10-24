@@ -14,6 +14,10 @@ class Menu(models.Model):
         on_delete=models.CASCADE
     )
 
+    class Meta:
+        verbose_name = 'Меню'
+        verbose_name_plural = 'Меню'
+
 
 class Allergy(models.Model):
     title = models.CharField(
@@ -61,7 +65,9 @@ class Order(models.Model):
         Allergy,
         verbose_name='аллергия',
         related_name='users',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
     )
     price = models.DecimalField(
         verbose_name='цена',
@@ -89,3 +95,7 @@ class Order(models.Model):
         null=False,
         blank=True
     )
+
+    class Meta:
+        verbose_name = 'Подписка на меню'
+        verbose_name_plural = 'Подписки на меню'

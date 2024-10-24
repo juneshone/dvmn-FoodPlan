@@ -5,29 +5,29 @@ from .models import User
 
 class SignUpForm(forms.Form):
     first_name = forms.CharField(
-        max_length=50,
-        label='Имя',
+        required=True,
+        max_length=25,
         widget=forms.TextInput(
             attrs={'class': 'custom-input'}
         )
     )
     last_name = forms.CharField(
-        max_length=50,
-        label='Фамилия',
+        required=True,
+        max_length=25,
         widget=forms.TextInput(
             attrs={'class': 'custom-input'}
         )
     )
     username = forms.CharField(
+        required=True,
         max_length=50,
-        label='Email',
         widget=forms.TextInput(
             attrs={'class': 'custom-input'}
         )
     )
     password = forms.CharField(
-        max_length=50,
-        label='Пароль',
+        required=True,
+        max_length=100,
         widget=forms.TextInput(
             attrs={'class': 'custom-input'}
         )
@@ -36,15 +36,15 @@ class SignUpForm(forms.Form):
 
 class LoginForm(forms.Form):
     username = forms.CharField(
+        required=True,
         max_length=50,
-        label='Email',
         widget=forms.TextInput(
             attrs={'class': 'custom-input'}
         )
     )
     password = forms.CharField(
-        max_length=50,
-        label='Пароль',
+        required=True,
+        max_length=100,
         widget=forms.TextInput(
             attrs={'class': 'custom-input'}
         )

@@ -47,10 +47,27 @@
                     <h2 class="text-center"><strong>Авторизация</strong></h2>
                 </div>
                 <div class="card px-5 py-3 d-flex align-items-center foodplan__shadow">
+
                     <form method="POST">
                         {% csrf_token %}
                         <h1 class="mb-4 text-center"><strong>Вход</strong></h1>
-                        {{ form.as_p }}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="username" aria-describedby="emailHelp" name="username">
+                            {% if form.errors.username %}
+                                <ul class="errorlist"><li>Обязательное поле</li>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label for="password" class="form-label">Пароль</label>
+                                <small><a href="#" class="link-dark foodplan_green">Забыли пароль?</a></small>
+                            </div>
+                            <input type="password" class="form-control" id="password" name="password">
+                            {% if form.errors.password %}
+                                <ul class="errorlist"><li>Обязательное поле</li>
+                            {% endif %}
+                        </div>
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6 mt-3">
                                 <button type="submit"

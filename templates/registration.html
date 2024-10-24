@@ -52,7 +52,38 @@
                     <form method="POST">
                         {% csrf_token %}
                         <h1 class="mb-4 text-center"><strong>Регистрация</strong></h1>
-                        {{ form.as_p }}
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">Имя</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name">
+                            {% if form.errors.first_name %}
+                                <ul class="errorlist"><li>Обязательное поле</li>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label">Фамилия</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name">
+                            {% if form.errors.last_name %}
+                                <ul class="errorlist"><li>Обязательное поле</li>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="username" aria-describedby="emailHelp" name="username">
+                            {% if form.errors.username %}
+                                <ul class="errorlist"><li>Обязательное поле</li>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Пароль</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                            {% if form.errors.password %}
+                                <ul class="errorlist"><li>Обязательное поле</li>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Подтверждение пароля</label>
+                            <input type="password" class="form-control" id="PasswordConfirm" name="password_confirmation">
+                        </div>
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6 mt-3">
                                 <button type="submit" class="btn  shadow-nonew-100 btn-outline-success foodplan_green foodplan__border_green">Регистрация</button>
