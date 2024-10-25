@@ -42,7 +42,6 @@ class SignUp(TemplateView):
                 user = authenticate(username=username, password=password)
                 login(request, user)
                 return redirect('/client/account/')
-        else:
         content = {'form': form}
         return render(request, 'registration.html', content)
 
