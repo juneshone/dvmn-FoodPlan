@@ -55,7 +55,7 @@
                             <label for="username" class="form-label">Email</label>
                             <input type="email" class="form-control" id="username" aria-describedby="emailHelp" name="username">
                             {% if form.errors.username %}
-                                <ul class="errorlist"><li>Обязательное поле</li>
+                                <div class="foodplan_orange"><h6>Обязательное поле</h6></div>
                             {% endif %}
                         </div>
                         <div class="mb-3">
@@ -65,9 +65,16 @@
                             </div>
                             <input type="password" class="form-control" id="password" name="password">
                             {% if form.errors.password %}
-                                <ul class="errorlist"><li>Обязательное поле</li>
+                                <div class="foodplan_orange"><h6>Обязательное поле</h6></div>
                             {% endif %}
                         </div>
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="foodplan_orange">
+                                <h6{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6 mt-3">
                                 <button type="submit"

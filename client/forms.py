@@ -4,6 +4,8 @@ from .models import User
 
 
 class SignUpForm(forms.Form):
+    """ Форма регистрации пользователя """
+
     first_name = forms.CharField(
         required=True,
         max_length=25,
@@ -32,9 +34,18 @@ class SignUpForm(forms.Form):
             attrs={'class': 'custom-input'}
         )
     )
+    password_confirmation = forms.CharField(
+        required=True,
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={'class': 'custom-input'}
+        )
+    )
 
 
 class LoginForm(forms.Form):
+    """ Форма аутентификации пользователя """
+
     username = forms.CharField(
         required=True,
         max_length=50,
@@ -52,8 +63,17 @@ class LoginForm(forms.Form):
 
 
 class UserEditForm(forms.ModelForm):
+    """ Форма обновления данных пользователя """
+
+    password = forms.CharField(
+        required=True,
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={'class': 'custom-input'}
+        )
+    )
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'password',)
+        fields = ('first_name', 'last_name', 'username',)
 
