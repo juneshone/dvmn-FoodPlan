@@ -7,13 +7,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
     <title>Foodplan 2021 - Меню на неделю FOODPLAN</title>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-md navbar-light fixed-top navbar__opacity">
             <div class="container">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="{% url 'start_page' %}">
                     <img src="{% static 'img/logo.8d8f24edbb5f.svg' %}" height="55" width="189" alt="">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse1"
@@ -24,8 +25,8 @@
                     <ul class="navbar-nav w-100">
                         
                         <li class="nav-item align-items-center d-md-flex flex-grow-1 justify-content-end">
-                            <button class="btn btn-outline-success me-2 shadow-none foodplan_green foodplan__border_green">Подписка</button>
-                            <button class="btn btn-outline-success shadow-none foodplan_green foodplan__border_green">Войти</button>
+                            <a href="{% url 'order' %}"><button class="btn btn-outline-success me-2 shadow-none foodplan_green foodplan__border_green">Подписка</button></a>
+                            <a href="{% url 'auth' %}"><button class="btn btn-outline-success shadow-none foodplan_green foodplan__border_green">Войти</button></a>
                         </li>
                     </ul>
                 </div>
@@ -36,7 +37,7 @@
         <section>
             <div class="container">
                 <div class="card p-3 mb-5 foodplan__shadow">
-                    <a href="#" class="link-secondary fw-light foodplan__backButton">
+                    <a href="javascript:history.back()" class="link-secondary fw-light foodplan__backButton">
                         <svg xmlns="http://www.w3.org/2000/svg" width="9%" height="9%" fill="currentColor" class="bi bi-arrow-left-circle"
                             viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
@@ -46,26 +47,41 @@
                     <h2 class="text-center"><strong>Авторизация</strong></h2>
                 </div>
                 <div class="card px-5 py-3 d-flex align-items-center foodplan__shadow">
-                    <form>
+
+                    <form method="POST">
+                        {% csrf_token %}
                         <h1 class="mb-4 text-center"><strong>Вход</strong></h1>
                         <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                            <label for="username" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="username" aria-describedby="emailHelp" name="username">
+                            {% if form.errors.username %}
+                                <div class="foodplan_orange"><h6>Обязательное поле</h6></div>
+                            {% endif %}
                         </div>
                         <div class="mb-3">
                             <div class="d-flex align-items-center justify-content-between">
-                                <label for="exampleInputPassword1" class="form-label">Пароль</label>
+                                <label for="password" class="form-label">Пароль</label>
                                 <small><a href="#" class="link-dark foodplan_green">Забыли пароль?</a></small>
                             </div>
-                            <input type="password" class="form-control" id="password">
+                            <input type="password" class="form-control" id="password" name="password">
+                            {% if form.errors.password %}
+                                <div class="foodplan_orange"><h6>Обязательное поле</h6></div>
+                            {% endif %}
                         </div>
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="foodplan_orange">
+                                <h6{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6 mt-3">
                                 <button type="submit"
                                     class="btn w-100 btn-outline-success shadow-none foodplan_green foodplan__border_green">Войти</button>
                             </div>
                             <div class="col-12 col-sm-6 mt-3 d-flex justify-content-center align-items-center">
-                                <small>Нет аккаунта? <a href="#" class="link-dark foodplan_green">Зарегистрируйтесь</a></small>
+                                <small>Нет аккаунта? <a href="{% url 'registration' %}" class="link-dark foodplan_green">Зарегистрируйтесь</a></small>
                             </div>
                         </div>
                     </form>

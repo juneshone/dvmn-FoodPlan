@@ -27,6 +27,7 @@ urlpatterns = [
     path('recipe/', include('recipe.urls')),
     path('menu/', include('orders.urls')),
     path('client/', include('client.urls')),
+
 ]
 
 if settings.DEBUG:
