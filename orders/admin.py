@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Order, Allergy
+from .models import Order
 
 
-class AllergyInline(admin.TabularInline):
-    model = Allergy
-    extra = 0
+# class OrderAllergyInline(admin.TabularInline):
+#     model = OrderAllergy
+#     extra = 0
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -17,7 +17,13 @@ class OrderAdmin(admin.ModelAdmin):
         'dessert',
         'price',
         'datestart',
-        'dateend'
+        'period',
+        'allergy1',
+        'allergy2',
+        'allergy3',
+        'allergy4',
+        'allergy5',
+        'allergy6'
     ]
     list_display = [
         'user',
@@ -28,9 +34,15 @@ class OrderAdmin(admin.ModelAdmin):
         'dessert',
         'price',
         'datestart',
-        'dateend'
+        'period',
+        'allergy1',
+        'allergy2',
+        'allergy3',
+        'allergy4',
+        'allergy5',
+        'allergy6'
     ]
 
-    inlines = [
-        AllergyInline
-    ]
+    # inlines = [
+    #     OrderAllergyInline
+    # ]

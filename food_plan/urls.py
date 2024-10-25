@@ -22,6 +22,7 @@ from django.shortcuts import render
 
 
 urlpatterns = [
+    # path('api-auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
     path('', render, kwargs={'template_name': 'index.html'}, name='start_page'),
     path('recipe/', include('recipe.urls')),

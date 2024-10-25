@@ -15,8 +15,6 @@ class Menu(models.Model):
     )
 
 
-
-
 class Order(models.Model):
     PERSONS_CHOICES = [
         ('1', 1),
@@ -26,6 +24,12 @@ class Order(models.Model):
         ('5', 5),
         ('6', 6),
     ]
+    PERIOD_CHOICES = [
+        ('1 мес', 0),
+        ('3 мес', 1),
+        ('6 мес', 2),
+        ('12 мес', 3)
+    ]
     menu = models.ForeignKey(
         Menu,
         verbose_name='меню',
@@ -33,10 +37,13 @@ class Order(models.Model):
         on_delete=models.CASCADE
     )
     datestart = models.DateTimeField(
-        verbose_name='дата начала'
+        verbose_name='дата начала',
+        auto_now_add=True
     )
-    dateend = models.DateTimeField(
-        verbose_name='дата конца'
+    period = models.PositiveIntegerField(
+        choices=PERIOD_CHOICES,
+        default=0,
+        verbose_name='период'
     )
     user = models.ForeignKey(
         User,
@@ -46,33 +53,28 @@ class Order(models.Model):
     )
     persons = models.PositiveIntegerField(
         choices=PERSONS_CHOICES,
-        default='UNPROCESSED',
+        default=1,
         db_index=True
     )
     breakfast = models.BooleanField(
         verbose_name='завтрак',
-        null=False,
         blank=True
     )
     lunch = models.BooleanField(
         verbose_name='обед',
-        null=False,
         blank=True
     )
     dinner = models.BooleanField(
         verbose_name='ужин',
-        null=False,
         blank=True
     )
     dessert = models.BooleanField(
         verbose_name='десерт',
-        null=False,
         blank=True
     )
     promocode = models.CharField(
         verbose_name='промокод',
         max_length=50,
-        null=False,
         blank=True
     )
     price = models.DecimalField(
@@ -80,13 +82,37 @@ class Order(models.Model):
         max_digits=8,
         decimal_places=2,
         validators=[MinValueValidator(0)],
-        null=False,
         blank=True
     )
     active = models.BooleanField(
         verbose_name='статус подписки',
+        default=True
+    )
+    allergy1 = models.BooleanField(
+        verbose_name='Рыба и морепродукты',
         default=False
     )
+    allergy2 = models.BooleanField(
+        verbose_name='Мясо',
+        default=False
+    )
+    allergy3 = models.BooleanField(
+        verbose_name='Зерновые',
+        default=False
+    )
+    allergy4 = models.BooleanField(
+        verbose_name='Продукты пчеловодства',
+        default=False
+    )
+    allergy5 = models.BooleanField(
+        verbose_name='Орехи и бобовые',
+        default=False
+    )
+    allergy6 = models.BooleanField(
+        verbose_name='Молочные продукты',
+        default=False
+    )
+
 
     class Meta():
         verbose_name = 'подписка'
@@ -96,16 +122,23 @@ class Order(models.Model):
         return f'{self.id} {self.user.name}'
 
 
-class Allergy(models.Model):
-    title = models.CharField(
-        verbose_name='аллергия',
-        max_length=50,
-        null=True,
-        blank=True
-    )
-    order = models.ForeignKey(
-        Order,
-        verbose_name='аллергии',
-        related_name='allergies',
-        on_delete=models.CASCADE
-    )
+# class Allergy(models.Model):
+#     title = models.CharField(
+#         verbose_name='аллергия',
+#         max_length=50,
+#     )
+#
+#
+# class OrderAllergy(models.Model):
+#     allergy = models.ForeignKey(
+#         Allergy,
+#         verbose_name='аллергии',
+#         related_name='allergies',
+#         on_delete=models.CASCADE,
+#     )
+#     order = models.ForeignKey(
+#         Order,
+#         verbose_name='подписки',
+#         related_name='orders',
+#         on_delete=models.CASCADE,
+#     )
