@@ -39,7 +39,23 @@ from pprint import pprint
 
 def order(request):
     print(request.method)
-    data = request.GET
-    pprint(data)
+    data_get = request.GET
+    data_post = request.POST
+
+    print(f'GET {data_get}')
+    print(f'POST {data_post}')
+    # print(data['period'])
+    # print(data['breakfast'])
+    # print(data['lunch'])
+    # print(data['dinner'])
+    # print(data['dessert'])
+    # print(data['persons'])
+    # print(data['allergy1'])
+    # print(data['allergy2'])
+    # print(data['allergy3'])
+    # print(data['allergy4'])
+    # print(data['allergy5'])
+    # print(data['allergy6'])
+
 
     return render(request, 'order.html')
