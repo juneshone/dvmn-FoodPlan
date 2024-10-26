@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, render, redirect
 from .forms import *
 from .models import *
 
@@ -32,6 +32,8 @@ def order_create(request):
                 persons=persons,
                 subscription_period=subscription_period
             )
+            if order:
+                return redirect('/client/account/')
         else:
            messages.success(request, 'Для оформления подписки необходимо выбрать меню')
     return render(request, 'order.html')
