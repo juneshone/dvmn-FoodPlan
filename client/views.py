@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from django.utils.safestring import mark_safe
 
 from .forms import *
+from orders.models import Order
 
 
 class SignUp(TemplateView):
@@ -85,6 +86,8 @@ class AccountView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context['user'] = get_object_or_404(User, username=user.username)
+        # order = get_object_or_404(Order, user=user.id)
+
         return context
 
     def post(self, request):

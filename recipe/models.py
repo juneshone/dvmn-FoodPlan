@@ -23,6 +23,16 @@ class Recipe(models.Model):
     dish = models.CharField(
         'Название блюда', max_length=100
     )
+    FOODTYPE_CHOICES = (
+        ('classic', 'Классическое'),
+        ('low', 'Низкоуглеводное'),
+        ('veg', 'Вегетарианское'),
+        ('keto', 'Кето'),
+    )
+    foodtype = models.CharField(
+        choices=FOODTYPE_CHOICES,
+        max_length=50
+    )
     image = models.ImageField(
         'Изображение',
         upload_to='image',

@@ -1,1 +1,93 @@
+from django.core.validators import MinValueValidator
+from django.db import models
+from client.models import User
 
+
+
+class Menu(models.Model):
+    FOODTYPE_CHOICES = (
+        ('classic', 'Классическое'),
+        ('low', 'Низкоуглеводное'),
+        ('veg', 'Вегетарианское'),
+        ('keto', 'Кето'),
+    )
+    foodtype = models.CharField(
+        verbose_name='Тип меню',
+        choices=FOODTYPE_CHOICES,
+        max_length=50
+    )
+
+    def __str__(self):
+        return self.foodtype
+
+    class Meta:
+        verbose_name = 'Меню'
+        verbose_name_plural = 'Меню'
+
+
+class Order(models.Model):
+    menu = models.ForeignKey(
+        Menu,
+        verbose_name='Меню',
+        on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        User,
+        verbose_name='Пользователь',
+        related_name='user',
+        on_delete=models.CASCADE
+    )
+    subscription_period = models.PositiveIntegerField(
+        verbose_name='Срок подписки',
+        default=1
+    )
+
+    datestart = models.DateTimeField(
+        verbose_name='Дата начала подписки',
+        auto_now_add=True
+    )
+#     dateend = models.DateTimeField(
+#         verbose_name='дата конца'
+#     )
+    persons = models.PositiveIntegerField(
+        verbose_name='Количество персон',
+        default=1
+    )
+    breakfast = models.BooleanField(
+        verbose_name='Завтрак',
+        default=True
+    )
+    lunch = models.BooleanField(
+        verbose_name='Обед',
+        default=True
+    )
+    dinner = models.BooleanField(
+        verbose_name='Ужин',
+        default=True
+    )
+    dessert = models.BooleanField(
+        verbose_name='Десерт',
+        default=True
+    )
+    allergy = models.CharField(
+        verbose_name='Аллергия',
+        max_length=50,
+        default=None,
+        blank=True,
+        null=True
+    )
+    #     price = models.DecimalField(
+    #         verbose_name='цена',
+    #         max_digits=8,
+    #         decimal_places=2,
+    #         validators=[MinValueValidator(0)],
+    #         null=False,
+    #         blank=True
+    #     )
+
+    def __str__(self):
+        return f'{self.menu} {self.user}'
+
+    class Meta:
+        verbose_name = 'Подписка на меню'
+        verbose_name_plural = 'Подписки на меню'

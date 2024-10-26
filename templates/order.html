@@ -27,12 +27,19 @@
             <div class="container">
                 <h1><strong class="foodplan_green">1 шаг </strong>до первого меню</h1>
                 <h5 class="text-secondary mb-3">Вам будет доступно 4 типа меню: Классическое, Низкоуглеводное, Вегетарианское и Кето.</h5>
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="foodplan_orange">
+                        <h5{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h5>
+                    </div>
+                    {% endfor %}
+                {% endif %}
                 <div class="row mb-5">
                     <div class="col-6 col-md-3">
                         
                         <label for="classic" class="position-relative" style="cursor: pointer;">
                             <img src="{% static 'img/menu_classical.png' %}" alt="" class="w-100">
-                            <input form="order" type="radio" name="menu" id="classic" value="classic" class="foodplan_selected d-none">
+                            <input form="order" type="radio" name="foodtype" id="classic" value="classic" class="foodplan_selected d-none">
                             <div class="img_selected" id="img1"></div>
                         </label>
                     </div>
@@ -40,7 +47,7 @@
                         
                         <label for="low" class="position-relative" style="cursor: pointer;">
                             <img src="{% static 'img/menu_nizkougl.png' %}" alt="" class="w-100">
-                            <input form="order" type="radio" name="menu" id="low" value="low" class="foodplan_selected d-none">
+                            <input form="order" type="radio" name="foodtype" id="low" value="low" class="foodplan_selected d-none">
                             <div class="img_selected" id="img2"></div>
                         </label>
                     </div>
@@ -48,7 +55,7 @@
                         
                         <label for="veg" class="position-relative" style="cursor: pointer;">
                             <img src="{% static 'img/menu_veg.png' %}" alt="" class="w-100">
-                            <input form="order" type="radio" name="menu" id="veg" value="veg" class="foodplan_selected d-none">
+                            <input form="order" type="radio" name="foodtype" id="veg" value="veg" class="foodplan_selected d-none">
                             <div class="img_selected" id="img3"></div>
                         </label>
                     </div>
@@ -56,19 +63,19 @@
                         
                         <label for="keto" class="position-relative" style="cursor: pointer;">
                             <img src="{% static 'img/menu_keto.png' %}" alt="" class="w-100">
-                            <input form="order" type="radio" name="menu" id="keto" value="keto" class="foodplan_selected d-none">
+                            <input form="order" type="radio" name="foodtype" id="keto" value="keto" class="foodplan_selected d-none">
                             <div class="img_selected" id="img4"></div>
                         </label>
                     </div>
                 </div>
                 <h2><strong>Выберите подходящий тариф</strong></h2>
-                <form id="order">
+                <form id="order" method="post">{% csrf_token %}
                 <table class="table text-center text-truncate mb-5">
                     <tbody>
                         <tr>
                             <th scope="row" class="text-start">Срок</th>
                             <td>
-                                <select name="period" class="form-select">
+                                <select class="form-select" name="subscription_period">
                                     <option value="1" selected>1 мес.</option>
                                     <option value="3">3 мес.</option>
                                     <option value="6">6 мес.</option>
@@ -80,8 +87,8 @@
                             <th scope="row" class="text-start">Завтраки</th>
                             <td>
                                 <select name="breakfast" class="form-select">
-                                    <option value="1" selected>&#10004;</option>
-                                    <option value="0">&#10008;</option>
+                                    <option value="True" selected>&#10004;</option>
+                                    <option value="False">&#10008;</option>
                                 </select>
                             </td>
                         </tr>
@@ -89,8 +96,8 @@
                             <th scope="row" class="text-start">Обеды</th>
                             <td>
                                 <select name="lunch" class="form-select">
-                                    <option value="1" selected>&#10004;</option>
-                                    <option value="0">&#10008;</option>
+                                    <option value="True" selected>&#10004;</option>
+                                    <option value="False">&#10008;</option>
                                 </select>
                             </td>
                         </tr>
@@ -98,8 +105,8 @@
                             <th scope="row" class="text-start">Ужины</th>
                             <td>
                                 <select name="dinner" class="form-select">
-                                    <option value="1" selected>&#10004;</option>
-                                    <option value="0">&#10008;</option>
+                                    <option value="True" selected>&#10004;</option>
+                                    <option value="False">&#10008;</option>
                                 </select>
                             </td>
                         </tr>
@@ -107,8 +114,8 @@
                             <th scope="row" class="text-start">Десерты</th>
                             <td>
                                 <select name="dessert" class="form-select">
-                                    <option value="1" selected>&#10004;</option>
-                                    <option value="0">&#10008;</option>
+                                    <option value="True" selected>&#10004;</option>
+                                    <option value="False">&#10008;</option>
                                 </select>
                             </td>
                         </tr>
@@ -129,38 +136,38 @@
                             <th scope="row" class="text-start">Аллергии</th>
                             <td>
                                 <div class="form-check d-flex justify-content-start">
-                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="fish" name="allergy1">
+                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="Рыба и морепродукты" name="allergy1" id="allergy1">
                                     <label class="form-check-label" for="allergy1">
                                         Рыба и морепродукты
                                     </label>
                                 </div>
                                 <div class="form-check d-flex justify-content-start">
-                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="meat" name="allergy2">
+                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="Мясо" name="allergy2" id="allergy2">
                                     <label class="form-check-label" for="allergy2">
                                         Мясо
                                     </label>
                                 </div>
                                 <div class="form-check d-flex justify-content-start">
-                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="grains" name="allergy3">
+                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="Зерновые" name="allergy3" id="allergy3">
                                     <label class="form-check-label" for="allergy3">
                                         Зерновые
                                     </label>
                                 </div>
                                 <div class="form-check d-flex justify-content-start">
-                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="honey" name="allergy4">
-                                    <label class="form-check-label" for="allergy4">
+                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="Продукты пчеловодства" name="allergy3" id="allergy3">
+                                    <label class="form-check-label" for="allergy3">
                                         Продукты пчеловодства
                                     </label>
                                 </div>
                                 <div class="form-check d-flex justify-content-start">
-                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="nuts" name="allergy5">
-                                    <label class="form-check-label" for="allergy5">
+                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="Орехи и бобовые" name="allergy3" id="allergy3">
+                                    <label class="form-check-label" for="allergy3">
                                         Орехи и бобовые
                                     </label>
                                 </div>
                                 <div class="form-check d-flex justify-content-start">
-                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="milk" name="allergy6">
-                                    <label class="form-check-label" for="allergy6">
+                                    <input class="form-check-input me-1 foodplan_checked-green" type="checkbox" value="Молочные продукты" name="allergy3" id="allergy3">
+                                    <label class="form-check-label" for="allergy3">
                                         Молочные продукты
                                     </label>
                                 </div>
