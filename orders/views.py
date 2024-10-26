@@ -4,13 +4,15 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from pprint import pprint
 
+from orders.serializers import SubscriptionSerializer
+
 
 # from orders.serializers import OrderSerializer
 #
 #
 # @api_view(['POST'])
 # def order(request):
-#     ord = {"period": 0, "menu": "classic", "breakfast": 1, "lunch": 0, "dinner": 1, "dessert": 0, "persons": 2, "allergy2": 1}
+#     ord = {"period": 3, "menu": "classic", "breakfast": 1, "lunch": 0, "dinner": 1, "dessert": 0, "persons": 2, "allergy2": 1}
 #     # serializer = OrderSerializer(data=request.data)
 #     # serializer.is_valid(raise_exception=True)
 #     # serializer.save()
@@ -38,12 +40,10 @@ from pprint import pprint
 
 
 def order(request):
-    print(request.method)
-    data_get = request.GET
-    data_post = request.POST
+    data = request.GET
+    # serialfiser = SubscriptionSerializer(data=data)
+    print(request.user)
 
-    print(f'GET {data_get}')
-    print(f'POST {data_post}')
     # print(data['period'])
     # print(data['breakfast'])
     # print(data['lunch'])
