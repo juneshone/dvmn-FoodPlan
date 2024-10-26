@@ -1,100 +1,92 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-
 from client.models import User
-from recipe.models import Recipe
+
 
 
 class Menu(models.Model):
-    title = models.CharField(max_length=50)
-    recipes = models.ForeignKey(
-        Recipe,
-        verbose_name='рецепты',
-        related_name='recipes',
-        on_delete=models.CASCADE
+    FOODTYPE_CHOICES = (
+        ('classic', 'Классическое'),
+        ('low', 'Низкоуглеводное'),
+        ('veg', 'Вегетарианское'),
+        ('keto', 'Кето'),
     )
+    foodtype = models.CharField(
+        verbose_name='Тип меню',
+        choices=FOODTYPE_CHOICES,
+        max_length=50
+    )
+
+    def __str__(self):
+        return self.foodtype
 
     class Meta:
         verbose_name = 'Меню'
         verbose_name_plural = 'Меню'
 
 
-class Allergy(models.Model):
-    title = models.CharField(
-        verbose_name='аллергия',
-        max_length=50,
-        null=True,
-        blank=True
-    )
-
-
 class Order(models.Model):
-    PERSONS_CHOICES = [
-        ('1', 1),
-        ('2', 2),
-        ('3', 3),
-        ('4', 4),
-        ('5', 5),
-        ('6', 6),
-    ]
     menu = models.ForeignKey(
         Menu,
-        verbose_name='меню',
-        related_name='menu',
+        verbose_name='Меню',
         on_delete=models.CASCADE
-    )
-    datestart = models.DateTimeField(
-        verbose_name='дата начала',
-        auto_now_add=True
-    )
-    dateend = models.DateTimeField(
-        verbose_name='дата конца'
     )
     user = models.ForeignKey(
         User,
-        verbose_name='пользователь',
-        related_name='users',
+        verbose_name='Пользователь',
+        related_name='user',
         on_delete=models.CASCADE
     )
+    subscription_period = models.PositiveIntegerField(
+        verbose_name='Срок подписки',
+        default=1
+    )
+
+    datestart = models.DateTimeField(
+        verbose_name='Дата начала подписки',
+        auto_now_add=True
+    )
+#     dateend = models.DateTimeField(
+#         verbose_name='дата конца'
+#     )
     persons = models.PositiveIntegerField(
-        choices=PERSONS_CHOICES,
-        default='UNPROCESSED',
-        db_index=True
-    )
-    allergy = models.ForeignKey(
-        Allergy,
-        verbose_name='аллергия',
-        related_name='users',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True
-    )
-    price = models.DecimalField(
-        verbose_name='цена',
-        max_digits=8,
-        decimal_places=2,
-        validators=[MinValueValidator(0)],
-        null=False,
-        blank=True
+        verbose_name='Количество персон',
+        default=1
     )
     breakfast = models.BooleanField(
-        verbose_name='завтрак',
+        verbose_name='Завтрак',
+        default=True
     )
     lunch = models.BooleanField(
-        verbose_name='обед',
+        verbose_name='Обед',
+        default=True
     )
     dinner = models.BooleanField(
-        verbose_name='ужин',
+        verbose_name='Ужин',
+        default=True
     )
     dessert = models.BooleanField(
-        verbose_name='десерт'
+        verbose_name='Десерт',
+        default=True
     )
-    promocode = models.CharField(
-        verbose_name='промокод',
+    allergy = models.CharField(
+        verbose_name='Аллергия',
         max_length=50,
-        null=False,
-        blank=True
+        default=None,
+        blank=True,
+        null=True
     )
+    #     price = models.DecimalField(
+    #         verbose_name='цена',
+    #         max_digits=8,
+    #         decimal_places=2,
+    #         validators=[MinValueValidator(0)],
+    #         null=False,
+    #         blank=True
+    #     )
+
+    def __str__(self):
+        return f'{self.menu} {self.user}'
 
     class Meta:
         verbose_name = 'Подписка на меню'
