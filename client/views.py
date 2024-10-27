@@ -91,8 +91,14 @@ class AccountView(LoginRequiredMixin, TemplateView):
         if not order:
             context['order'] = ''
             return context
-
-        order.name = f'{order.menu.foodtype}'
+        if order.menu.foodtype == 'keto':
+            order.name = 'Кето'
+        if order.menu.foodtype == 'veg':
+            order.name = 'Вегетарианское'
+        if order.menu.foodtype == 'low':
+            order.name = 'Низкокалорийное'
+        if order.menu.foodtype == 'classic':
+            order.name = 'Классическое'
         order.period = f'{order.subscription_period} мес.'
         context['order'] = order
 
