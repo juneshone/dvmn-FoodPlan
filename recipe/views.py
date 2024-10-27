@@ -5,7 +5,6 @@ from recipe.models import Recipe, RecipeIngredient
 
 
 def card(request):
-    # TODO: привязать рецепты к меню
     recipes = Recipe.objects.all().values_list('id', flat=True)
     recipe_id = random.choice(recipes)
     recipe = get_object_or_404(Recipe, id=recipe_id)
@@ -16,6 +15,6 @@ def card(request):
         'price': recipe.price,
         'instruction': recipe.instruction,
         'ingredients': recipe_ingredients,
-        'calories': sum([i.ingredient.calorie for i in recipe_ingredients])
+        'calories': sum([recipe_ingredient.ingredient.calorie for recipe_ingredient in recipe_ingredients])
     }
     return render(request, 'card.html', context={'recipe': recipe_context})
