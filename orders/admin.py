@@ -40,4 +40,4 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
     search_fields = ('foodtype',)
-    list_display = ('foodtype',)
+    list_display = ('foodtype', 'price')
