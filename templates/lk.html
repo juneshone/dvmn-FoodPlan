@@ -97,7 +97,7 @@
                                         {% if messages %}
                                             {% for message in messages %}
                                             <div class="foodplan_orange">
-                                                <h6{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6>
+                                                <h6>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6>
                                             </div>
                                             {% endfor %}
                                         {% endif %}
@@ -106,7 +106,7 @@
                                 <div class="tab-pane fade" id="menu">
                                     <div class="row">
                                         <div class="col-2">
-                                            <img src="{% static 'img/circle1.png' %}" alt="" class="w-100">
+                                            <img src="{% static 'media/image/sup-xarcho-s-risom_1506002531_11_max.jpg' %}" alt="" class="w-100">
                                         </div>
                                         {% if not order %}
                                             <div class="col-md-12 col-lg-9">
@@ -116,37 +116,26 @@
                                             <div class="col-10 col-md-10">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <h2>{{ order.name }}</h2>
+                                                        <h2>{{ recipe.dish }}</h2>
                                                     </div>
                                                     <div class="col-md-12 col-lg-9">
-                                                        {% if order.name == 'Кето' %}
-                                                            <h6>Кетогенная (КЕТО) диета- это низкоуглеводная диета. Особенностью этой диеты является использование организмом в качестве энергии кетонов.</h6>
-                                                        {% endif %}
-                                                        {% if order.name == 'Вегетарианское' %}
-                                                            <h6>Вегетарианская диета исключает мясо животных, птицу, рыбу и морепродукты. .</h6>
-                                                        {% endif %}
-                                                        {% if order.name == 'Низкокалорийное' %}
-                                                            <h6>Низкокалорийная диета предполагает ограничение потребления калорий с целью снижения веса..</h6>
-                                                        {% endif %}
-                                                        {% if order.name == 'Классическое' %}
-                                                            <h6>Классические блюда - быстрые и простые рецепты для дома на любой вкус.</h6>
-                                                        {% endif %}
+                                                            <h6>{{ recipe.instruction }}</h6>
                                                     </div>
-                                                    <div class="col-md-12 col-lg-3 text-muted d-flex flex-column justify-content-between">
-                                                        <div class="d-flex flex-row justify-content-between">
-                                                            <small>Дата начала тодписки: </small><small>{{ order.datestart }}</small>
-                                                        </div>
-                                                        <div class="d-flex flex-row justify-content-between">
-                                                            <small>Период: </small><small>{{ order.period }}</small>
-                                                        </div>
-                                                        <div class="d-flex flex-row justify-content-between">
-                                                            <small>Персоны: </small><small>{{ order.persons }}</small>
-                                                        </div>
-                                                        <div class="d-flex flex-row justify-content-between">
-                                                            <small>Аллергии: </small><small>{{ order.allergy }}</small>
-                                                        </div>
+                                                <div class="col-md-12 col-lg-3 text-muted d-flex flex-column justify-content-between">
+                                                    <div class="d-flex flex-row justify-content-between">
+                                                        <small>Меню: </small><small>{{ order.name }}</small>
+                                                    </div>
+                                                    <div class="d-flex flex-row justify-content-between">
+                                                        <small>Персоны: </small><small>{{ order.persons }}</small>
+                                                    </div>
+                                                    <div class="d-flex flex-row justify-content-between">
+                                                        <small>Аллергии: </small><small>нет</small>
+                                                    </div>
+                                                    <div class="d-flex flex-row justify-content-between">
+                                                        <small>Калории: </small><small>1400</small>
+                                                    </div>
 
-                                                    </div>
+                                                </div>
                                                 </div>
                                             </div>
                                         {% endif %}
