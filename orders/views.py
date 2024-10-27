@@ -21,17 +21,21 @@ def order_create(request):
             subscription_period = form.cleaned_data.get('subscription_period')
             allergy = allergy1, allergy2, allergy3
             menu = get_object_or_404(Menu, foodtype=foodtype)
-            order = Order.objects.create(
-                menu=menu,
-                user=get_object_or_404(User, id=request.user.id),
-                allergy=allergy,
-                breakfast=breakfast,
-                lunch=lunch,
-                dinner=dinner,
-                dessert=dessert,
-                persons=persons,
-                subscription_period=subscription_period
-            )
+            if request.user.is_authenticated:
+                order = Order.objects.create(
+                    menu=menu,
+                    user=get_object_or_404(User, id=request.user.id),
+                    allergy=allergy,
+                    breakfast=breakfast,
+                    lunch=lunch,
+                    dinner=dinner,
+                    dessert=dessert,
+                    persons=persons,
+                    subscription_period=subscription_period
+                )
+            else:
+                messages.success(request, 'Для оформления подписки необходимо войти в свой профиль')
+                return redirect('/menu/order/')
             if order:
                 return redirect('/client/account/')
         else:

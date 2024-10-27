@@ -1,5 +1,6 @@
 import datetime
 import random
+
 from django.contrib.auth import login, authenticate
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,7 +10,7 @@ from django.utils.safestring import mark_safe
 
 from .forms import *
 from orders.models import Order, Menu
-
+from recipe.models import Recipe
 
 class SignUp(TemplateView):
     """ Регистрация пользователя """
@@ -110,7 +111,6 @@ class AccountView(LoginRequiredMixin, TemplateView):
         context['order'] = order
         context['recipe'] = recipe
         return context
-
 
     def post(self, request):
         try:
