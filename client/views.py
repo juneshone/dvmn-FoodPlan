@@ -1,4 +1,6 @@
 import datetime
+import random
+
 from django.contrib.auth import login, authenticate
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +10,7 @@ from django.utils.safestring import mark_safe
 
 from .forms import *
 from orders.models import Order, Menu
-
+from recipe.models import Recipe
 
 class SignUp(TemplateView):
     """ Регистрация пользователя """
@@ -91,6 +93,10 @@ class AccountView(LoginRequiredMixin, TemplateView):
         if not order:
             context['order'] = ''
             return context
+
+        menu = order.menu.foodtype
+        recipe = random.choice(Recipe.objects.filter(foodtype=menu))
+        print(recipe)
         if order.menu.foodtype == 'keto':
             order.name = 'Кето'
         if order.menu.foodtype == 'veg':
@@ -99,9 +105,11 @@ class AccountView(LoginRequiredMixin, TemplateView):
             order.name = 'Низкокалорийное'
         if order.menu.foodtype == 'classic':
             order.name = 'Классическое'
-        order.period = f'{order.subscription_period} мес.'
-        context['order'] = order
 
+
+        # order.period = f'{order.subscription_period} мес.'
+        context['order'] = order
+        context['recipe'] = recipe
         return context
 
     def post(self, request):
