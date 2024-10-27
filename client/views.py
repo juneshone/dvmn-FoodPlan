@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth import login, authenticate
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -6,7 +7,7 @@ from django.views.generic import TemplateView
 from django.utils.safestring import mark_safe
 
 from .forms import *
-from orders.models import Order
+from orders.models import Order, Menu
 
 
 class SignUp(TemplateView):
@@ -86,7 +87,14 @@ class AccountView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context['user'] = get_object_or_404(User, username=user.username)
-        # order = get_object_or_404(Order, user=user.id)
+        order = Order.objects.filter(user=user).first()
+        if not order:
+            context['order'] = ''
+            return context
+
+        order.name = f'{order.menu.foodtype}'
+        order.period = f'{order.subscription_period} мес.'
+        context['order'] = order
 
         return context
 
