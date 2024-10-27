@@ -42,3 +42,19 @@ class OrderCreateForm(forms.Form):
         required=False,
         max_length=50,
     )
+
+
+class PaymentForm(forms.Form):
+    card_number = forms.CharField(
+        required=True,
+        max_length=19,
+    )
+    validity_period = forms.CharField(
+        required=True,
+        max_length=7,
+    )
+    card_code = forms.CharField(
+        required=True,
+        max_length=3,
+    )
+
