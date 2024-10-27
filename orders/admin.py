@@ -14,7 +14,27 @@ class OrderAdmin(admin.ModelAdmin):
         'dessert',
         'persons',
         'datestart',
+        'get_allergy'
     ]
+
+    def get_allergy(self, obj):
+        all_allergy_list = [
+            'Рыба и морепродукты',
+            'Мясо',
+            'Зерновые',
+            'Продукты пчеловодства',
+            'Орехи и бобовые',
+            'Молочные продукты',
+        ]
+
+        all_allergy = obj.allergy
+        allergies = ''
+        for allergy in all_allergy_list:
+            if allergy in all_allergy:
+                allergies = allergies + allergy + ' '
+
+        return  allergies
+
 
 
 @admin.register(Menu)

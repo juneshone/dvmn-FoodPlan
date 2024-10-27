@@ -95,8 +95,8 @@ class AccountView(LoginRequiredMixin, TemplateView):
             return context
 
         menu = order.menu.foodtype
-        recipe = random.choice(Recipe.objects.filter(foodtype=menu))
-        print(recipe)
+        recipe = random.choice(Recipe.objects.filter(foodtype=menu).prefetch_related('ingredients'))
+
         if order.menu.foodtype == 'keto':
             order.name = 'Кето'
         if order.menu.foodtype == 'veg':
@@ -106,8 +106,24 @@ class AccountView(LoginRequiredMixin, TemplateView):
         if order.menu.foodtype == 'classic':
             order.name = 'Классическое'
 
+        all_allergy_list = [
+            'Рыба и морепродукты',
+            'Мясо',
+            'Зерновые',
+            'Продукты пчеловодства',
+            'Орехи и бобовые',
+            'Молочные продукты',
+        ]
+        all_allergy = order.allergy
+        allergies = ''
+        for allergy in all_allergy_list:
+            if allergy in all_allergy:
+                allergies = allergies + allergy + '\n'
+        context['allergies'] = allergies
 
-        # order.period = f'{order.subscription_period} мес.'
+        calories = sum([recipe_ingredient.calorie for recipe_ingredient in recipe.ingredients.all()])
+        recipe.calories = calories
+
         context['order'] = order
         context['recipe'] = recipe
         return context
