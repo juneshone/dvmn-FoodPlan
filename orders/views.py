@@ -9,7 +9,7 @@ def order_create(request):
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
         if form.is_valid():
-            foodtype = form.cleaned_data.get('foodtype')
+            foodtype_price = form.cleaned_data.get('foodtype')
             allergy1 = form.cleaned_data.get('allergy1')
             allergy2 = form.cleaned_data.get('allergy2')
             allergy3 = form.cleaned_data.get('allergy3')
@@ -20,7 +20,8 @@ def order_create(request):
             persons = form.cleaned_data.get('persons')
             subscription_period = form.cleaned_data.get('subscription_period')
             allergy = allergy1, allergy2, allergy3
-            menu = get_object_or_404(Menu, foodtype=foodtype)
+            menu = get_object_or_404(Menu, price=foodtype_price)
+
             if request.user.is_authenticated:
                 order = Order.objects.create(
                     menu=menu,
