@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 
 from .forms import *
 from orders.models import Order
-from recipe.models import Recipe
+from recipe.models import Recipe, RecipeIngredient
 
 class SignUp(TemplateView):
     """ Регистрация пользователя """
@@ -123,9 +123,9 @@ class AccountView(LoginRequiredMixin, TemplateView):
 
         calories = sum([recipe_ingredient.calorie for recipe_ingredient in recipe.ingredients.all()])
         recipe.calories = calories
-
         context['order'] = order
         context['recipe'] = recipe
+        context['recipe_ingredients'] = RecipeIngredient.objects.filter(recipe=recipe).select_related('ingredient')
         return context
 
     def post(self, request):
