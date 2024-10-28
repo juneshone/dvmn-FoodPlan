@@ -96,7 +96,7 @@ class PaymentView(LoginRequiredMixin, TemplateView):
             order = Order.objects.filter(user=user, payment_status='NOT_PAID').last()
             order.payment_status = 'PAID'
             order.save()
-            return redirect('/client/account/')
+            return redirect('/recipe/card/')
         else:
             messages.success(request, 'Введите карту')
             return redirect('/menu/order/')

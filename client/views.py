@@ -125,7 +125,6 @@ class AccountView(LoginRequiredMixin, TemplateView):
         recipe.calories = calories
         context['order'] = order
         context['recipe'] = recipe
-        context['recipe_ingredients'] = RecipeIngredient.objects.filter(recipe=recipe).select_related('ingredient')
         return context
 
     def post(self, request):

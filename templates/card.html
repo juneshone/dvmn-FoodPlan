@@ -22,7 +22,12 @@
                 <a class="navbar-brand" href="{% url 'start_page' %}">
                     <img src="{% static 'img/logo.8d8f24edbb5f.svg' %}" height="55" width="189" alt="">
                 </a>
-                <a href="javascript:history.back()"><button class="btn btn-outline-success me-2 shadow-none foodplan_green foodplan__border_green">Назад</button></a>
+                <!--<a href="javascript:history.back()"><button class="btn btn-outline-success shadow-none foodplan_green foodplan__border_green">Назад</button></a>-->
+                {% if user.is_authenticated %}
+                    <a href="{% url 'card' %}"><button class="btn btn-outline-success shadow-none foodplan_green foodplan__border_green">Следующий</button></a>
+                {% else %}
+                    <a href="{% url 'auth' %}"><button class="btn btn-outline-success shadow-none foodplan_green foodplan__border_green">Войти</button></a>
+                {% endif %}
             </div>
         </nav>
     </header>
@@ -31,6 +36,13 @@
             <section>
                 <div class="container">
                     <div class="row">
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="foodplan_orange">
+                                <h5{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</br></br></h5>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
                         <div class="col-12 col-md-4 d-flex justify-content-center">
                             <div class="card foodplan__card_borderless">
                                 <img src="{{recipe.image.url}}" alt="" class="round">
