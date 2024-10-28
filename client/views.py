@@ -94,6 +94,24 @@ class AccountView(LoginRequiredMixin, TemplateView):
             context['order'] = ''
             return context
 
+        all_allergy_list = [
+            'Рыба и морепродукты',
+            'Мясо',
+            'Зерновые',
+            'Продукты пчеловодства',
+            'Орехи и бобовые',
+            'Молочные продукты',
+        ]
+
+
+
+
+
+
+
+
+
+
         menu = order.menu.foodtype
         recipe = random.choice(Recipe.objects.filter(foodtype=menu).prefetch_related('ingredients'))
 
@@ -106,14 +124,7 @@ class AccountView(LoginRequiredMixin, TemplateView):
         if order.menu.foodtype == 'classic':
             order.name = 'Классическое'
 
-        all_allergy_list = [
-            'Рыба и морепродукты',
-            'Мясо',
-            'Зерновые',
-            'Продукты пчеловодства',
-            'Орехи и бобовые',
-            'Молочные продукты',
-        ]
+
         all_allergy = order.allergy
         allergies = ''
         for allergy in all_allergy_list:
