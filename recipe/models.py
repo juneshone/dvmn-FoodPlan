@@ -31,7 +31,8 @@ class Recipe(models.Model):
     )
     foodtype = models.CharField(
         choices=FOODTYPE_CHOICES,
-        max_length=50
+        max_length=50,
+        verbose_name='Тип диеты'
     )
     image = models.ImageField(
         'Изображение',
@@ -51,6 +52,53 @@ class Recipe(models.Model):
     )
     instruction = models.TextField(
         'Инструкция приготовления'
+    )
+
+    breakfast = models.BooleanField(
+        verbose_name='Завтрак',
+        default=True
+    )
+    lunch = models.BooleanField(
+        verbose_name='Обед',
+        default=True
+    )
+    dinner = models.BooleanField(
+        verbose_name='Ужин',
+        default=True
+    )
+    dessert = models.BooleanField(
+        verbose_name='Десерт',
+        default=True
+    )
+
+    recommend = models.BooleanField(
+        verbose_name='Рекомендовать пользователям',
+        default=True
+    )
+
+    allergy_fish = models.BooleanField(
+        verbose_name='Аллергия на рыбу и морепродукты',
+        default=False
+    )
+    allergy_meat = models.BooleanField(
+        verbose_name='Аллергия на мясо',
+        default=False
+    )
+    allergy_cereal = models.BooleanField(
+        verbose_name='Аллергия на зерновые',
+        default=False
+    )
+    allergy_bee = models.BooleanField(
+        verbose_name='Аллергия на продукты пчеловодства',
+        default=False
+    )
+    allergy_nuts = models.BooleanField(
+        verbose_name='Аллергия на орехи и бобовые',
+        default=False
+    )
+    allergy_milk = models.BooleanField(
+        verbose_name='Аллергия на молочные продукты',
+        default=False
     )
 
     def __str__(self):

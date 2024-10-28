@@ -1,7 +1,5 @@
-from django.core.validators import MinValueValidator
 from django.db import models
 from client.models import User
-
 
 
 class Menu(models.Model):
@@ -12,7 +10,7 @@ class Menu(models.Model):
         ('keto', 'Кето'),
     )
     foodtype = models.CharField(
-        verbose_name='Тип меню',
+        verbose_name='Тип диеты',
         choices=FOODTYPE_CHOICES,
         max_length=50
     )
@@ -26,8 +24,8 @@ class Menu(models.Model):
         return self.foodtype
 
     class Meta:
-        verbose_name = 'Меню'
-        verbose_name_plural = 'Меню'
+        verbose_name = 'Тип диеты'
+        verbose_name_plural = 'Типы диеты'
 
 
 class Order(models.Model):

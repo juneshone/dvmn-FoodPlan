@@ -34,8 +34,7 @@ class OrderAdmin(admin.ModelAdmin):
             if allergy in all_allergy:
                 allergies = allergies + allergy + ' '
 
-        return  allergies
-
+        return allergies
 
 
 @admin.register(Menu)

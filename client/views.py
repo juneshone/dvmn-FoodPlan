@@ -11,6 +11,7 @@ from .forms import *
 from orders.models import Order
 from recipe.models import Recipe, RecipeIngredient
 
+
 class SignUp(TemplateView):
     """ Регистрация пользователя """
 
@@ -25,7 +26,8 @@ class SignUp(TemplateView):
             last_name = form.cleaned_data.get('last_name')
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            password_confirmation = form.cleaned_data.get('password_confirmation')
+            password_confirmation = form.cleaned_data.get(
+                'password_confirmation')
             if password != password_confirmation:
                 message_text = 'Подтверждение пароля не совпадает с самим паролем'
                 messages.success(request, message_text)
@@ -95,7 +97,8 @@ class AccountView(LoginRequiredMixin, TemplateView):
             return context
 
         menu = order.menu.foodtype
-        recipe = random.choice(Recipe.objects.filter(foodtype=menu).prefetch_related('ingredients'))
+        recipe = random.choice(Recipe.objects.filter(
+            foodtype=menu).prefetch_related('ingredients'))
 
         if order.menu.foodtype == 'keto':
             order.name = 'Кето'
@@ -121,7 +124,8 @@ class AccountView(LoginRequiredMixin, TemplateView):
                 allergies = allergies + allergy + '\n'
         context['allergies'] = allergies
 
-        calories = sum([recipe_ingredient.calorie for recipe_ingredient in recipe.ingredients.all()])
+        calories = sum(
+            [recipe_ingredient.calorie for recipe_ingredient in recipe.ingredients.all()])
         recipe.calories = calories
         context['order'] = order
         context['recipe'] = recipe
@@ -138,7 +142,8 @@ class AccountView(LoginRequiredMixin, TemplateView):
             messages.success(request, 'Ваш профиль успешно обновлен')
             return redirect('/client/account/')
         else:
-            messages.success(request, 'Заполните все поля для изменения данных')
+            messages.success(
+                request, 'Заполните все поля для изменения данных')
             return redirect('/client/account/')
         content = {'form': form}
         return render(request, 'lk.html', content)
