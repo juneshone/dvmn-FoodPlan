@@ -1,15 +1,14 @@
-import datetime
 import random
 
-from django.contrib.auth import login, authenticate
-from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.views.generic import TemplateView
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.safestring import mark_safe
+from django.views.generic import TemplateView
 
 from .forms import *
-from orders.models import Order, Menu
+from orders.models import Order
 from recipe.models import Recipe
 
 class SignUp(TemplateView):
@@ -89,7 +88,8 @@ class AccountView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context['user'] = get_object_or_404(User, username=user.username)
-        order = Order.objects.filter(user=user).first()
+        order = Order.objects.filter(user=user, payment_status='PAID').last()
+
         if not order:
             context['order'] = ''
             return context

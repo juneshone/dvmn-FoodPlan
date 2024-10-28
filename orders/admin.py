@@ -14,6 +14,7 @@ class OrderAdmin(admin.ModelAdmin):
         'dessert',
         'persons',
         'datestart',
+        'payment_status',
     ]
 
 

@@ -31,6 +31,10 @@ class Menu(models.Model):
 
 
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('PAID', 'Оплаченный'),
+        ('NOT_PAID', 'Не оплаченный'),
+    ]
     menu = models.ForeignKey(
         Menu,
         verbose_name='Меню',
@@ -51,9 +55,6 @@ class Order(models.Model):
         verbose_name='Дата начала подписки',
         auto_now_add=True
     )
-#     dateend = models.DateTimeField(
-#         verbose_name='дата конца'
-#     )
     persons = models.PositiveIntegerField(
         verbose_name='Количество персон',
         default=1
@@ -81,14 +82,17 @@ class Order(models.Model):
         blank=True,
         null=True
     )
-    #     price = models.DecimalField(
-    #         verbose_name='цена',
-    #         max_digits=8,
-    #         decimal_places=2,
-    #         validators=[MinValueValidator(0)],
-    #         null=False,
-    #         blank=True
-    #     )
+    cost = models.DecimalField(
+        verbose_name='Стоимость',
+        max_digits=10,
+        decimal_places=2
+    )
+    payment_status = models.CharField(
+        verbose_name='Статус',
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default='NOT_PAID'
+    )
 
     def __str__(self):
         return f'{self.menu} {self.user}'

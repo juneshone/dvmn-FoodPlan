@@ -191,29 +191,7 @@
                     <button type="submit" class="btn shadow-none btn-outline-success foodplan_green foodplan__border_green">Применить</button>
                 </form>
                 <div class="d-flex justify-content-center my-5">
-                    <button class="btn shadow-none btn-outline-success foodplan_green foodplan__border_green w-50" id="myButton">Перейти к оформлению</button>
-                    <div id="myPopup" class="popup">
-                        <div class="popup-content">
-                            <h4 style="color: green">Оформление</h4>
-                            <!--<li style="color: grey">Тип меню: название</li>
-                            <li style="color: grey">Количество персон: 2</li>
-                            <li style="color: grey">Срок: 1 мес.</li>-->
-                            <h8>Всего: 1 товар</h8>
-                            <form method="post">
-                                <div class="mb-3">
-                                    <label for="card_number" class="form-label">Номер карты:</label>
-                                    <input type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx" required class="form-control" id="card_number"  name="card_number">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="validity_period" class="form-label">Действует до:</label>
-                                    <input type="text" maxlength="7" pattern=".*\S.*" placeholder="ММ/ГГГГ" required class="form-control" id="validity_period"  name="validity_period">
-                                    <label for="card_code" class="form-label">Код:</label>
-                                    <input type="text" maxlength="3" placeholder="000" required class="form-control" id="card_code"  name="card_code">
-                                </div>
-                            </form>
-                            <button form="order" type="submit" class="btn shadow-none btn-outline-success foodplan_green foodplan__border_green w-50" id="closePopup">Оплатить</button>
-                        </div>
-                    </div>
+                    <button form="order" type="submit" class="btn shadow-none btn-outline-success foodplan_green foodplan__border_green w-50">Перейти к оплате</button>
                 </div>
             </div>
         </section>
@@ -222,30 +200,6 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script>
-        myButton.addEventListener(
-            "click",
-            function () {
-                myPopup.classList.add("show");
-            }
-        );
-        closePopup.addEventListener(
-            "click",
-            function () {
-                myPopup.classList.remove(
-                    "show"
-                );
-            }
-        );
-        window.addEventListener(
-            "click",
-            function (event) {
-                if (event.target == myPopup) {
-                    myPopup.classList.remove(
-                        "show"
-                    );
-                }
-            }
-        );
         var cost = 0
         document.getElementById('classic').addEventListener('click', function() {
 			var cost = document.getElementById("classic").value;
