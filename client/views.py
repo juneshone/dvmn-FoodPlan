@@ -129,6 +129,8 @@ class AccountView(LoginRequiredMixin, TemplateView):
             recipes.exclude(allergy_milk=True)
         recipe = random.choice(recipes.prefetch_related('ingredients'))
 
+        context['recipe_ingredients'] = RecipeIngredient.objects.filter(recipe=recipe).select_related('ingredient')
+
         if order.menu.foodtype == 'keto':
             order.name = 'Кето'
         if order.menu.foodtype == 'veg':
