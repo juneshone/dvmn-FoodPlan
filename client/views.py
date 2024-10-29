@@ -102,18 +102,32 @@ class AccountView(LoginRequiredMixin, TemplateView):
             'Орехи и бобовые',
             'Молочные продукты',
         ]
-
-
-
-
-
-
-
-
-
+        all_allergy = order.allergy
+        allergies = ''
+        for allergy in all_allergy_list:
+            if allergy in all_allergy:
+                allergies = allergies + allergy + '\n'
+        context['allergies'] = allergies
 
         menu = order.menu.foodtype
-        recipe = random.choice(Recipe.objects.filter(foodtype=menu).prefetch_related('ingredients'))
+        recipes = Recipe.objects.filter(foodtype=menu, recommend=True)
+        recipes.filter(breakfast=order.breakfast).exclude(breakfast=False)
+        recipes.filter(lunch=order.lunch).exclude(lunch=False)
+        recipes.filter(dinner=order.dinner).exclude(dinner=False)
+        recipes.filter(dessert=order.dessert).exclude(dessert=False)
+        if 'Рыба и морепродукты' in order.allergy:
+            recipes.exclude(allergy_fish=True)
+        if 'Мясо' in order.allergy:
+            recipes.exclude(allergy_meat=True)
+        if 'Зерновые' in order.allergy:
+            recipes.exclude(allergy_cereal=True)
+        if 'Продукты пчеловодства' in order.allergy:
+            recipes.exclude(allergy_bee=True)
+        if 'Орехи и бобовые' in order.allergy:
+            recipes.exclude(allergy_nuts=True)
+        if 'Молочные продукты' in order.allergy:
+            recipes.exclude(allergy_milk=True)
+        recipe = random.choice(recipes.prefetch_related('ingredients'))
 
         if order.menu.foodtype == 'keto':
             order.name = 'Кето'
@@ -124,18 +138,12 @@ class AccountView(LoginRequiredMixin, TemplateView):
         if order.menu.foodtype == 'classic':
             order.name = 'Классическое'
 
-
-        all_allergy = order.allergy
-        allergies = ''
-        for allergy in all_allergy_list:
-            if allergy in all_allergy:
-                allergies = allergies + allergy + '\n'
-        context['allergies'] = allergies
-
         calories = sum([recipe_ingredient.calorie for recipe_ingredient in recipe.ingredients.all()])
         recipe.calories = calories
+
         context['order'] = order
         context['recipe'] = recipe
+
         return context
 
     def post(self, request):

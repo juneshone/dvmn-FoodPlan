@@ -12,7 +12,7 @@ def card(request):
             order = Order.objects.filter(user=user.id, payment_status='PAID').last()
             if order:
                 menu = order.menu.foodtype
-                recipe = random.choice(Recipe.objects.filter(foodtype=menu).prefetch_related('ingredients'))
+                recipe = random.choice(Recipe.objects.filter(foodtype=menu, recommend=True).prefetch_related('ingredients'))
             else:
                 messages.success(request, 'Для просмотра всех рецептов необходимо оформить подписку')
                 recipe = get_object_or_404(Recipe, id=1)
