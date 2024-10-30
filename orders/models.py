@@ -23,7 +23,7 @@ class Menu(models.Model):
     price = models.DecimalField(
         verbose_name='Стоимость',
         max_digits=10,
-        decimal_places=2
+        decimal_places=0
     )
 
     def __str__(self):
@@ -89,7 +89,7 @@ class Order(models.Model):
     cost = models.DecimalField(
         verbose_name='Стоимость',
         max_digits=10,
-        decimal_places=2
+        decimal_places=0
     )
     payment_status = models.CharField(
         verbose_name='Статус',

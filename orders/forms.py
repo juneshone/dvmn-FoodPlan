@@ -2,9 +2,9 @@ from django import forms
 
 
 class OrderCreateForm(forms.Form):
-    foodtype = forms.CharField(
+    foodtype = forms.DecimalField(
         required=True,
-        max_length=50,
+        decimal_places=0,
     )
     allergy1 = forms.CharField(
         required=False,

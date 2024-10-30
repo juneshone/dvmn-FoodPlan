@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 from .forms import *
 from .models import *
-
+from decimal import Decimal
 
 def order_create(request):
     # TODO: создать ограничение на выбор только 3х аллергий
@@ -24,8 +24,8 @@ def order_create(request):
             persons = form.cleaned_data.get('persons')
             subscription_period = form.cleaned_data.get('subscription_period')
             allergy = allergy1, allergy2, allergy3
-            menu = get_object_or_404(Menu, price=foodtype_price)
 
+            menu = get_object_or_404(Menu, price=int(foodtype_price))
             if request.user.is_authenticated:
                 order = Order.objects.create(
                     menu=menu,
@@ -37,7 +37,7 @@ def order_create(request):
                     dessert=dessert,
                     persons=persons,
                     subscription_period=subscription_period,
-                    cost=foodtype_price
+                    cost=menu.price
                 )
             else:
                 messages.success(request, 'Для оформления подписки необходимо войти в свой профиль')
