@@ -16,7 +16,8 @@ class Menu(models.Model):
     )
     image = models.ImageField(
         verbose_name='Изображение',
-        upload_to='image'
+        upload_to='image',
+        blank=True
     )
     price = models.DecimalField(
         verbose_name='Стоимость',
