@@ -1,7 +1,5 @@
-from django.core.validators import MinValueValidator
 from django.db import models
 from client.models import User
-
 
 
 class Menu(models.Model):
@@ -16,10 +14,14 @@ class Menu(models.Model):
         choices=FOODTYPE_CHOICES,
         max_length=50
     )
+    image = models.ImageField(
+        verbose_name='Изображение',
+        upload_to='image'
+    )
     price = models.DecimalField(
         verbose_name='Стоимость',
         max_digits=10,
-        decimal_places=2
+        decimal_places=0
     )
 
     def __str__(self):
@@ -85,7 +87,7 @@ class Order(models.Model):
     cost = models.DecimalField(
         verbose_name='Стоимость',
         max_digits=10,
-        decimal_places=2
+        decimal_places=0
     )
     payment_status = models.CharField(
         verbose_name='Статус',
@@ -100,14 +102,3 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'Подписка на меню'
         verbose_name_plural = 'Подписки на меню'
-
-
-# class Payment(models.Model):
-#     amount = models.DecimalField(verbose_name='Сумма', max_digits=10, decimal_places=2, blank=True, null=True)
-#
-#     class Meta:
-#         verbose_name = 'Платеж'
-#         verbose_name_plural = 'Платежи'
-#
-#     def __str__(self):
-#         return f'Платеж {self.amount}'

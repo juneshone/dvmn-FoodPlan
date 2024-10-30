@@ -1,10 +1,12 @@
 from django import forms
 
+from .models import Order
 
-class OrderCreateForm(forms.Form):
-    foodtype = forms.CharField(
+
+class OrderCreateForm(forms.ModelForm):
+    foodtype = forms.DecimalField(
         required=True,
-        max_length=50,
+        decimal_places=0,
     )
     allergy1 = forms.CharField(
         required=False,
@@ -18,30 +20,17 @@ class OrderCreateForm(forms.Form):
         required=False,
         max_length=50,
     )
-    breakfast = forms.CharField(
-        required=False,
-        max_length=50,
-    )
-    lunch = forms.CharField(
-        required=False,
-        max_length=50,
-    )
-    dinner = forms.CharField(
-        required=False,
-        max_length=50,
-    )
-    dessert = forms.CharField(
-        required=False,
-        max_length=50,
-    )
-    persons = forms.CharField(
-        required=False,
-        max_length=50,
-    )
-    subscription_period = forms.CharField(
-        required=False,
-        max_length=50,
-    )
+
+    class Meta:
+        model = Order
+        fields = (
+            'breakfast',
+            'lunch',
+            'dinner',
+            'dessert',
+            'persons',
+            'subscription_period',
+        )
 
 
 class PaymentForm(forms.Form):
@@ -57,4 +46,3 @@ class PaymentForm(forms.Form):
         required=True,
         max_length=3,
     )
-
