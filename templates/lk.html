@@ -118,78 +118,106 @@
                                                 <h6><br><br><br>Для просмотра меню оформите подписку</h6>
                                             </div>
                                         {% else %}
-                                            <div class="col-2">
-                                                <img src="{{ recipe.image.url }}" alt="" class="w-100">
-                                            </div>
-                                            <div class="col-10 col-md-10">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <h2>{{ recipe.dish }}</h2>
-                                                    </div>
-                                                    <div class="col-md-12 col-lg-9">
-                                                            <h6>{{ recipe.instruction }}</h6>
-                                                            <small class="link-secondary">Ингредиенты:</small>
-                                                        <ul class="list-group list-group-flush">
-                                                            {% for ingredient in recipe_ingredients %}
-                                                                <li class="list-group-item disabled"><small>{{ ingredient.ingredient.title}} ({{ ingredient.quantity}}г.)</small></li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                        <small class="link-secondary">Общая стоимость продуктов: {{ recipe.price }} р.<br></small>
-                                                        {% if recipe.breakfast  %}
-                                                            <small>     Завтрак:   </small><small>Да</small>
-                                                        {% endif %}
-                                                        {% if recipe.lunch  %}
-                                                            <small>     Обед:      </small><small>Да</small>
-                                                        {% endif %}
-                                                        {% if recipe.dinner  %}
-                                                            <small>     Ужин:      </small><small>Да</small>
-                                                        {% endif %}
-                                                        {% if recipe.dessert  %}
-                                                            <small>     Десерт:    </small><small>Да</small>
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="col-md-12 col-lg-3 text-muted d-flex flex-column justify-content-between">
-                                                        <div class="d-flex flex-row justify-content-between">
-                                                            <small>Меню: </small><small>{{ order.name }}</small>
+                                            {% if no_dish %}
+                                                <div class="col-2">
+                                                    <img src="{% static 'img/circle1.png' %}" alt="" class="w-100">
+                                                </div>
+                                                <div class="col-md-12 col-lg-9">
+                                                    <h6><br><br><br>{{ no_dish }}</h6>
+                                                </div>
+                                            {% else %}
+                                                <div class="col-2">
+                                                    <img src="{{ recipe.image.url }}" alt="" class="w-100">
+                                                </div>
+                                                <div class="col-10 col-md-10">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <h2>{{ recipe.dish }}</h2>
                                                         </div>
-                                                        <div class="d-flex flex-row justify-content-between">
-                                                            <small>Персоны: </small><small>{{ order.persons }}</small>
+                                                        <div class="col-md-12 col-lg-9">
+                                                                <h6>{{ recipe.instruction }}</h6>
+                                                                <small class="col-12">Ингредиенты:</small>
+                                                            <ul>
+                                                                {% for ingredient in recipe_ingredients %}
+                                                                    <li><small>{{ ingredient.ingredient.title}} ({{ ingredient.quantity}}г.)</small></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                            <small class="link-secondary">Общая стоимость продуктов: {{ recipe.price }} р.<br></small>
+                                                            {% if recipe.breakfast  %}
+                                                                <small>Завтрак</small>
+                                                            {% endif %}
+                                                            {% if recipe.lunch %}
+                                                                <small>Обед</small>
+                                                            {% endif %}
+                                                            {% if recipe.dinner %}
+                                                                <small>Ужин</small>
+                                                            {% endif %}
+                                                            {% if recipe.dessert %}
+                                                                <small>Десерт</small>
+                                                            {% endif %}
+                                                            <small><br>Аллергия:</small>
+                                                            {% if recipe.allergy_fish  %}
+                                                                <small>Рыба</small>
+                                                            {% endif %}
+                                                            {% if recipe.allergy_meat %}
+                                                                <small>Мясо</small>
+                                                            {% endif %}
+                                                            {% if recipe.allergy_cereal %}
+                                                                <small>Зерновые</small>
+                                                            {% endif %}
+                                                            {% if recipe.allergy_bee %}
+                                                                <small>Мед</small>
+                                                            {% endif %}
+                                                            {% if recipe.allergy_nuts %}
+                                                                <small>Орехи</small>
+                                                            {% endif %}
+                                                            {% if recipe.allergy_milk %}
+                                                                <small>Молоко</small>
+                                                            {% endif %}
                                                         </div>
-                                                        {% if order.breakfast  %}
+                                                        <div class="col-md-12 col-lg-3 text-muted d-flex flex-column justify-content-between">
                                                             <div class="d-flex flex-row justify-content-between">
-                                                                <small>Завтрак: </small><small>Да</small>
+                                                                <small>Меню: </small><small>{{ order.name }}</small>
                                                             </div>
-                                                        {% endif %}
-                                                        {% if order.lunch  %}
                                                             <div class="d-flex flex-row justify-content-between">
-                                                                <small>Обед: </small><small>Да</small>
+                                                                <small>Персоны: </small><small>{{ order.persons }}</small>
                                                             </div>
-                                                        {% endif %}
-                                                        {% if order.dinner  %}
+                                                            {% if order.breakfast  %}
+                                                                <div class="d-flex flex-row justify-content-between">
+                                                                    <small>Завтрак: </small><small>Да</small>
+                                                                </div>
+                                                            {% endif %}
+                                                            {% if order.lunch  %}
+                                                                <div class="d-flex flex-row justify-content-between">
+                                                                    <small>Обед: </small><small>Да</small>
+                                                                </div>
+                                                            {% endif %}
+                                                            {% if order.dinner  %}
+                                                                <div class="d-flex flex-row justify-content-between">
+                                                                    <small>Ужин: </small><small>Да</small>
+                                                                </div>
+                                                            {% endif %}
+                                                            {% if order.dessert  %}
+                                                                <div class="d-flex flex-row justify-content-between">
+                                                                    <small>Десерт: </small><small>Да</small>
+                                                                </div>
+                                                            {% endif %}
+                                                            {% if order.allergy  %}
+                                                                <div class="d-flex flex-row justify-content-between">
+                                                                    <small>Аллергии: </small><small>{{ allergies }}</small>
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="d-flex flex-row justify-content-between">
+                                                                    <small>Аллергии: </small><small>Нет</small>
+                                                                </div>
+                                                            {% endif %}
                                                             <div class="d-flex flex-row justify-content-between">
-                                                                <small>Ужин: </small><small>Да</small>
+                                                                <small>Калории: </small><small>{{ recipe.calories }}</small>
                                                             </div>
-                                                        {% endif %}
-                                                        {% if order.dessert  %}
-                                                            <div class="d-flex flex-row justify-content-between">
-                                                                <small>Десерт: </small><small>Да</small>
-                                                            </div>
-                                                        {% endif %}
-                                                        {% if order.allergy  %}
-                                                            <div class="d-flex flex-row justify-content-between">
-                                                                <small>Аллергии: </small><small>{{ allergies }}</small>
-                                                            </div>
-                                                        {% else %}
-                                                            <div class="d-flex flex-row justify-content-between">
-                                                                <small>Аллергии: </small><small>Нет</small>
-                                                            </div>
-                                                        {% endif %}
-                                                        <div class="d-flex flex-row justify-content-between">
-                                                            <small>Калории: </small><small>{{ recipe.calories }}</small>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </div>

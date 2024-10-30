@@ -3,6 +3,7 @@ import random
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.safestring import mark_safe
 from django.views.generic import TemplateView
@@ -109,27 +110,54 @@ class AccountView(LoginRequiredMixin, TemplateView):
                 allergies = allergies + allergy + '\n'
         context['allergies'] = allergies
 
-        menu = order.menu.foodtype
-        recipes = Recipe.objects.filter(foodtype=menu, recommend=True)
-        recipes.filter(breakfast=order.breakfast).exclude(breakfast=False)
-        recipes.filter(lunch=order.lunch).exclude(lunch=False)
-        recipes.filter(dinner=order.dinner).exclude(dinner=False)
-        recipes.filter(dessert=order.dessert).exclude(dessert=False)
         if 'Рыба и морепродукты' in order.allergy:
-            recipes.exclude(allergy_fish=True)
+            allergy_fish = True
+        else:
+            allergy_fish = False
         if 'Мясо' in order.allergy:
-            recipes.exclude(allergy_meat=True)
+            allergy_meat = True
+        else:
+            allergy_meat = False
         if 'Зерновые' in order.allergy:
-            recipes.exclude(allergy_cereal=True)
+            allergy_cereal = True
+        else:
+            allergy_cereal = False
         if 'Продукты пчеловодства' in order.allergy:
-            recipes.exclude(allergy_bee=True)
+            allergy_bee = True
+        else:
+            allergy_bee = False
         if 'Орехи и бобовые' in order.allergy:
-            recipes.exclude(allergy_nuts=True)
+            allergy_nuts = True
+        else:
+            allergy_nuts = False
         if 'Молочные продукты' in order.allergy:
-            recipes.exclude(allergy_milk=True)
-        recipe = random.choice(recipes.prefetch_related('ingredients'))
+            allergy_milk = True
+        else:
+            allergy_milk = False
 
-        context['recipe_ingredients'] = RecipeIngredient.objects.filter(recipe=recipe).select_related('ingredient')
+        menu = order.menu.foodtype
+
+        recipes = Recipe.objects.filter(
+            foodtype=menu, recommend=True).filter(
+            Q(breakfast=order.breakfast) & Q(breakfast=True) |
+            Q(lunch=order.lunch) & Q(lunch=True) |
+            Q(dinner=order.dinner) & Q(dinner=True) |
+            Q(dessert=order.dessert) & Q(dessert=True)).filter(
+            ~(Q(allergy_fish=allergy_fish) & Q(allergy_fish=True)) &
+            ~(Q(allergy_meat=allergy_meat) & Q(allergy_meat=True)) &
+            ~(Q(allergy_cereal=allergy_cereal) & Q(allergy_cereal=True)) &
+            ~(Q(allergy_bee=allergy_bee) & Q(allergy_bee=True)) &
+            ~(Q(allergy_nuts=allergy_nuts) & Q(allergy_nuts=True)) &
+            ~(Q(allergy_milk=allergy_milk) & Q(allergy_milk=True)))
+
+        if recipes.exists():
+            recipe = random.choice(recipes)
+            calories = sum([recipe_ingredient.calorie for recipe_ingredient in recipe.ingredients.all()])
+            recipe.calories = calories
+            context['recipe'] = recipe
+            context['recipe_ingredients'] = RecipeIngredient.objects.filter(recipe=recipe).select_related('ingredient')
+        else:
+            context['no_dish'] = 'Не найдено подходящего блюда'
 
         if order.menu.foodtype == 'keto':
             order.name = 'Кето'
@@ -140,11 +168,7 @@ class AccountView(LoginRequiredMixin, TemplateView):
         if order.menu.foodtype == 'classic':
             order.name = 'Классическое'
 
-        calories = sum([recipe_ingredient.calorie for recipe_ingredient in recipe.ingredients.all()])
-        recipe.calories = calories
-
         context['order'] = order
-        context['recipe'] = recipe
 
         return context
 
