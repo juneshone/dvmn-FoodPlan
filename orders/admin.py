@@ -39,7 +39,7 @@ class OrderAdmin(admin.ModelAdmin):
             if allergy in all_allergy:
                 allergies = allergies + allergy + ' '
 
-        return  allergies
+        return allergies
 
 
 @admin.register(Menu)
@@ -50,5 +50,8 @@ class MenuAdmin(admin.ModelAdmin):
 
     def get_preview(self, obj):
         if obj.image:
-            return format_html('<img src="{}" style="max-width: {}px; max-height={}px" />', obj.image.url,
-                               MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
+            return format_html(
+                '<img src="{}" style="max-width: {}px; max-height={}px" />',
+                obj.image.url,
+                MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT
+            )

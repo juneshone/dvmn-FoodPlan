@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 from .forms import *
 from .models import *
-from decimal import Decimal
+
 
 def order_create(request):
     # TODO: создать ограничение на выбор только 3х аллергий
