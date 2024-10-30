@@ -1,5 +1,10 @@
 from django.contrib import admin
+from django.utils.html import format_html
+
 from .models import Order, Menu
+
+MAX_IMAGE_WIDTH = 300
+MAX_IMAGE_HEIGHT = 200
 
 
 @admin.register(Order)
@@ -15,7 +20,7 @@ class OrderAdmin(admin.ModelAdmin):
         'persons',
         'datestart',
         'payment_status',
-        'get_allergy'
+        'get_allergy',
     ]
 
     def get_allergy(self, obj):
@@ -37,8 +42,13 @@ class OrderAdmin(admin.ModelAdmin):
         return  allergies
 
 
-
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
     search_fields = ('foodtype',)
     list_display = ('foodtype', 'price')
+    readonly_fields = ["get_preview"]
+
+    def get_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-width: {}px; max-height={}px" />', obj.image.url,
+                               MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)

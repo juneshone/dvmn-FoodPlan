@@ -16,6 +16,10 @@ class Menu(models.Model):
         choices=FOODTYPE_CHOICES,
         max_length=50
     )
+    image = models.ImageField(
+        verbose_name='Изображение',
+        upload_to='image'
+    )
     price = models.DecimalField(
         verbose_name='Стоимость',
         max_digits=10,

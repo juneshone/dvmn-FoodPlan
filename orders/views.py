@@ -9,6 +9,7 @@ from .models import *
 
 def order_create(request):
     # TODO: создать ограничение на выбор только 3х аллергий
+    menu = Menu.objects.all()
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
         if form.is_valid():
@@ -45,7 +46,7 @@ def order_create(request):
                 return redirect('/menu/pay/')
         else:
            messages.success(request, 'Для оформления подписки необходимо выбрать меню')
-    return render(request, 'order.html')
+    return render(request, 'order.html', {'menu': menu})
 
 
 class PaymentView(LoginRequiredMixin, TemplateView):
@@ -87,6 +88,7 @@ class PaymentView(LoginRequiredMixin, TemplateView):
             order.dessert = 'нет'
 
         context['order'] = order
+
         return context
 
     def post(self, request):
