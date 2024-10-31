@@ -70,6 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         db_table = 'users'
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользовватели'
+
     @property
     def token(self):
         """ Токен пользователя """
