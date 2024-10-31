@@ -95,7 +95,7 @@ class AccountView(LoginRequiredMixin, TemplateView):
             context['order'] = ''
             return context
 
-        all_allergy = [
+        all_allergies = [
             'Рыба и морепродукты',
             'Мясо',
             'Зерновые',
@@ -104,7 +104,7 @@ class AccountView(LoginRequiredMixin, TemplateView):
             'Молочные продукты',
         ]
         allergies = ''
-        for allergy in all_allergy:
+        for allergy in all_allergies:
             if allergy in order.allergy:
                 allergies = allergies + allergy + '\n'
         context['allergies'] = allergies
