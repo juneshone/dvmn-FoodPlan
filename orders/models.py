@@ -3,7 +3,6 @@ from django.db import models
 from client.models import User
 
 
-
 class Menu(models.Model):
     FOODTYPE_CHOICES = (
         ('classic', 'Классическое'),
@@ -48,7 +47,8 @@ class Order(models.Model):
     )
     subscription_period = models.PositiveIntegerField(
         verbose_name='Срок подписки',
-        default=1
+        default=1,
+        validators = [MinValueValidator(1)]
     )
 
     datestart = models.DateTimeField(
@@ -85,7 +85,8 @@ class Order(models.Model):
     cost = models.DecimalField(
         verbose_name='Стоимость',
         max_digits=10,
-        decimal_places=2
+        decimal_places=2,
+        validators=[MinValueValidator(0)]
     )
     payment_status = models.CharField(
         verbose_name='Статус',

@@ -17,9 +17,9 @@ class OrderAdmin(admin.ModelAdmin):
         'payment_status',
         'get_allergy'
     ]
-
+    readonly_fields = ['allergy']
     def get_allergy(self, obj):
-        all_allergy_list = [
+        all_allergy = [
             'Рыба и морепродукты',
             'Мясо',
             'Зерновые',
@@ -27,14 +27,11 @@ class OrderAdmin(admin.ModelAdmin):
             'Орехи и бобовые',
             'Молочные продукты',
         ]
-
-        all_allergy = obj.allergy
         allergies = ''
-        for allergy in all_allergy_list:
-            if allergy in all_allergy:
+        for allergy in all_allergy:
+            if allergy in obj.allergy:
                 allergies = allergies + allergy + ' '
-
-        return  allergies
+        return allergies
 
 
 
